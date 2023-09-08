@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300&display=swap" rel="stylesheet">
+    <title>Stock Visualization</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add Material Design Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css">
+    <!-- Chart.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        body {
+            /* Add Google Sans font-family to body */
+            font-family: 'Google Sans', sans-serif;
+            background: linear-gradient(to bottom, #4481eb, #04befe);
+            color: white;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .card {
+            background-color: rgba(248, 249, 250, 0.8);
+            border: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Change color to black for specific text elements */
+        .black-text {
+            color: black;
+        }
+
+        /* Add a class for the line chart container */
+        .line-chart-container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center black-text">Stock <span class="black-text">Visualization</span></h1>
+        <div class="card p-4">
+            <!-- Add a div for the line chart container -->
+            <div class="line-chart-container">
+                <canvas id="myLineChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+        <p class="text-center mt-4">
+            <a href="/" class="btn btn-primary">Back to Home</a>
+        </p>
+    </div>
+
+    <script>
+        // JavaScript code to create and configure the line graph
+        var ctx = document.getElementById('myLineChart').getContext('2d');
+        var productNames = {{ product_names|tojson|safe }};
+        var stockLevels = {{ stock_levels|tojson|safe }};
+        var backgroundColor = 'rgba(75, 192, 192, 0.2)'; // Background color for the graph area
+        var borderColor = 'rgba(75, 192, 192, 1)'; // Line color
+
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: productNames, // Use product names here
+                datasets: [{
+                    label: 'Stock Levels',
+                    data: stockLevels, // Use product stock levels here
+                    fill: true, // Fill the area under the line
+                    backgroundColor: backgroundColor,
+                    borderColor: borderColor,
+                    borderWidth: 2 // Line width
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    animateScale: true, // Enable scaling animation
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hide the legend
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Products'
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Stock'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

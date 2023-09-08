@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Management System</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add Material Design Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #4481eb, #04befe);
+            color: white;
+            font-family: 'Google Sans', sans-serif; /* Change to Google Sans font */
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .card {
+            background-color: rgba(248, 249, 250, 0.8);
+            border: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Change color to dark gray for specific text elements */
+        .dark-gray-text {
+            color: #333;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #a71b31;
+            border-color: #a71b31;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center dark-gray-text">Inventory Management System</h1>
+        <div class="card p-4">
+            <!-- Use the "dark-gray-text" class to make specific text dark gray -->
+            <h2 class="mb-3 dark-gray-text">Add Product</h2>
+            <form action="/add" method="post">
+                <div class="form-group">
+                    <label for="name" class="dark-gray-text">Product Name:</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="stock" class="dark-gray-text">Initial Stock:</label>
+                    <input type="number" class="form-control" name="stock" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Product</button>
+                <a href="/logout" class="btn btn-danger ml-2">Logout</a> <!-- Logout button -->
+            </form>
+        </div>
+        <h2 class="mt-4 dark-gray-text">Products</h2>
+        <div class="card p-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product['id'] }}</td>
+                        <td>{{ product['name'] }}</td>
+                        <td>{{ product['stock'] }}</td>
+                        <td>
+                            <a href="/sell/{{ product['id'] }}" class="btn btn-danger btn-sm">Sell</a>
+                            <a href="/delete/{{ product['id'] }}" class="btn btn-outline-danger btn-sm ml-1">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="text-center mt-4">
+            <a href="/visualize" class="btn btn-secondary">Visualize Stock</a>
+        </p>
+    </div>
+</body>
+</html>
